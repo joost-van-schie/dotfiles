@@ -16,6 +16,18 @@ else
   echo "dotfiles: aliases al aanwezig"
 fi
 
+# Stel terminal titel in op Coder workspace naam (voor iTerm2 / ManicTime)
+if [ -f "$HOME/.bashrc" ] && ! grep -q "CODER_WORKSPACE_NAME" "$HOME/.bashrc" 2>/dev/null; then
+  cat >> "$HOME/.bashrc" << 'EOF'
+
+# Terminal titel instellen op Coder workspace naam
+if [ -n "$CODER_WORKSPACE_NAME" ]; then
+  PROMPT_COMMAND='echo -ne "\033]0;${CODER_WORKSPACE_NAME}\007"'
+fi
+EOF
+  echo "dotfiles: terminal titel configuratie toegevoegd aan .bashrc"
+fi
+
 # Zorg dat .bash_aliases geladen wordt vanuit .bashrc
 if [ -f "$HOME/.bashrc" ] && ! grep -q "bash_aliases" "$HOME/.bashrc" 2>/dev/null; then
   cat >> "$HOME/.bashrc" << 'EOF'
