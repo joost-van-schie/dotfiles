@@ -2,6 +2,15 @@
 # Coder workspace dotfiles installer
 # Dit script wordt automatisch uitgevoerd bij het aanmaken/starten van een workspace
 
+# Installeer nl_NL.UTF-8 locale (voorkomt warnings bij SSH vanuit MacBook)
+if ! locale -a 2>/dev/null | grep -q "nl_NL.utf8"; then
+  if command -v locale-gen &>/dev/null; then
+    sudo sed -i '/nl_NL.UTF-8/s/^# //' /etc/locale.gen 2>/dev/null
+    sudo locale-gen nl_NL.UTF-8 &>/dev/null
+    echo "dotfiles: nl_NL.UTF-8 locale geïnstalleerd"
+  fi
+fi
+
 ALIASES_FILE="$HOME/.bash_aliases"
 
 # Voeg aliases toe als ze er nog niet zijn
