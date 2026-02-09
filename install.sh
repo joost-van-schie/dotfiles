@@ -20,10 +20,16 @@ fi
 if [ -f "$HOME/.bashrc" ] && ! grep -q "CODER_WORKSPACE_NAME" "$HOME/.bashrc" 2>/dev/null; then
   cat >> "$HOME/.bashrc" << 'EOF'
 
-# Terminal titel instellen op Coder workspace naam
-if [ -n "$CODER_WORKSPACE_NAME" ]; then
-  PROMPT_COMMAND='echo -ne "\033]0;${CODER_WORKSPACE_NAME}\007"'
-fi
+# Terminal titel instellen op git repo naam (fallback: workspace naam)
+__set_terminal_title() {
+  local title
+  title=$(basename "$(git rev-parse --show-toplevel 2>/dev/null)" 2>/dev/null)
+  if [ -z "$title" ]; then
+    title="${CODER_WORKSPACE_NAME}"
+  fi
+  echo -ne "\033]0;${title}\007"
+}
+PROMPT_COMMAND='__set_terminal_title'
 EOF
   echo "dotfiles: terminal titel configuratie toegevoegd aan .bashrc"
 fi
