@@ -80,6 +80,7 @@ cat > "$CLAUDE_MD" << 'EOF'
 ## ClickUp
 - **Workspace ID:** 90152177083
 - **Folder ID en List ID:** staan in de project-level CLAUDE.md
+- **Statussen:** gebruik `complete` (NIET `done`) om een taak af te sluiten
 
 ## Git conventies
 - Gebruik ALTIJD een ClickUp taaknummer in branch namen: `feature/VSS-<id>-korte-beschrijving`
