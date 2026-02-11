@@ -77,6 +77,15 @@ cat > "$CLAUDE_MD" << 'EOF'
 ## Taal
 - Communiceer in het Nederlands
 
+## ClickUp
+- **Workspace ID:** 90152177083
+- **Folder ID en List ID:** staan in de project-level CLAUDE.md
+
+## Git conventies
+- Gebruik ALTIJD een ClickUp taaknummer in branch namen: `feature/CU-<task_id>-korte-beschrijving`
+- Gebruik ALTIJD een ClickUp taaknummer in commit messages: `CU-<task_id> Beschrijving van de wijziging`
+- Haal het taaknummer op uit de project CLAUDE.md of vraag het aan de gebruiker
+
 ## ClickUp CLI
 De ClickUp CLI (`clickup`) is geïnstalleerd in `~/bin/clickup` met een geconfigureerde API token in `~/.clickup/config.yaml`.
 
