@@ -82,8 +82,8 @@ cat > "$CLAUDE_MD" << 'EOF'
 - **Folder ID en List ID:** staan in de project-level CLAUDE.md
 
 ## Git conventies
-- Gebruik ALTIJD een ClickUp taaknummer in branch namen: `feature/CU-<task_id>-korte-beschrijving`
-- Gebruik ALTIJD een ClickUp taaknummer in commit messages: `CU-<task_id> Beschrijving van de wijziging`
+- Gebruik ALTIJD een ClickUp taaknummer in branch namen: `feature/VSS-<id>-korte-beschrijving`
+- Gebruik ALTIJD een ClickUp taaknummer in commit messages: `VSS-<id> Beschrijving van de wijziging`
 - Haal het taaknummer op uit de project CLAUDE.md of vraag het aan de gebruiker
 
 ## ClickUp CLI
