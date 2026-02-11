@@ -101,6 +101,18 @@ Alle output is JSON. Gebruik `jq` voor filtering en formatting.
 EOF
 echo "dotfiles: CLAUDE.md aangemaakt/bijgewerkt"
 
+# Auto-cd naar project directory bij SSH login
+if [ -f "$HOME/.bashrc" ] && ! grep -q "auto-cd" "$HOME/.bashrc" 2>/dev/null; then
+  cat >> "$HOME/.bashrc" << 'EOF'
+
+# auto-cd naar project directory (workspace naam)
+if [ -n "$CODER_WORKSPACE_NAME" ] && [ -d "$HOME/$CODER_WORKSPACE_NAME" ]; then
+  cd "$HOME/$CODER_WORKSPACE_NAME"
+fi
+EOF
+  echo "dotfiles: auto-cd naar project directory toegevoegd aan .bashrc"
+fi
+
 # Zorg dat .bash_aliases geladen wordt vanuit .bashrc
 if [ -f "$HOME/.bashrc" ] && ! grep -q "bash_aliases" "$HOME/.bashrc" 2>/dev/null; then
   cat >> "$HOME/.bashrc" << 'EOF'
