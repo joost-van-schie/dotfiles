@@ -34,6 +34,12 @@ EOF
   echo "dotfiles: terminal titel configuratie toegevoegd aan .bashrc"
 fi
 
+# Voorkom dat Claude Code de terminal titel overschrijft (iTerm2 / ManicTime)
+if [ -f "$HOME/.bashrc" ] && ! grep -q 'CLAUDE_CODE_DISABLE_TERMINAL_TITLE' "$HOME/.bashrc" 2>/dev/null; then
+  echo 'export CLAUDE_CODE_DISABLE_TERMINAL_TITLE=1' >> "$HOME/.bashrc"
+  echo "dotfiles: Claude Code terminal titel uitgeschakeld in .bashrc"
+fi
+
 # Installeer ClickUp CLI als die er nog niet is
 if [ ! -f "$HOME/bin/clickup" ]; then
   mkdir -p "$HOME/bin"
@@ -60,6 +66,38 @@ EOF
   echo "dotfiles: ClickUp config aangemaakt"
 else
   echo "dotfiles: ClickUp config al aanwezig"
+fi
+
+# Installeer GitHub CLI als die er nog niet is
+if ! command -v gh &>/dev/null; then
+  mkdir -p "$HOME/bin"
+  ARCH=$(uname -m)
+  if [ "$ARCH" = "x86_64" ]; then
+    GH_ARCH="amd64"
+  elif [ "$ARCH" = "aarch64" ]; then
+    GH_ARCH="arm64"
+  fi
+  GH_VERSION="2.67.0"
+  curl -sL "https://github.com/cli/cli/releases/download/v${GH_VERSION}/gh_${GH_VERSION}_linux_${GH_ARCH}.tar.gz" | tar xz --strip-components=2 -C "$HOME/bin" "gh_${GH_VERSION}_linux_${GH_ARCH}/bin/gh"
+  chmod +x "$HOME/bin/gh"
+  echo "dotfiles: GitHub CLI geïnstalleerd in ~/bin"
+else
+  echo "dotfiles: GitHub CLI al aanwezig"
+fi
+
+# GitHub CLI authenticatie via persistent token bestand
+if [ -f "$HOME/.bashrc" ] && ! grep -q 'GH_TOKEN' "$HOME/.bashrc" 2>/dev/null; then
+  cat >> "$HOME/.bashrc" << 'GHEOF'
+
+# GitHub CLI token laden uit persistent bestand
+if [ -f "$HOME/.gh_token" ]; then
+  export GH_TOKEN=$(cat "$HOME/.gh_token")
+fi
+GHEOF
+  echo "dotfiles: GH_TOKEN laden toegevoegd aan .bashrc"
+fi
+if [ ! -f "$HOME/.gh_token" ]; then
+  echo "dotfiles: ACTIE NODIG - stel gh token in met: echo 'TOKEN' > ~/.gh_token"
 fi
 
 # Voeg ~/bin toe aan PATH als dat nog niet zo is
