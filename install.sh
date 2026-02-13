@@ -106,6 +106,14 @@ if [ -f "$HOME/.bashrc" ] && ! grep -q 'HOME/bin' "$HOME/.bashrc" 2>/dev/null; t
   echo "dotfiles: ~/bin toegevoegd aan PATH"
 fi
 
+# Installeer Claude Code als die er nog niet is
+if ! command -v claude &>/dev/null; then
+  sudo npm install -g @anthropic-ai/claude-code
+  echo "dotfiles: Claude Code geïnstalleerd"
+else
+  echo "dotfiles: Claude Code al aanwezig"
+fi
+
 # Claude Code globale instructies
 CLAUDE_MD="$HOME/.claude/CLAUDE.md"
 mkdir -p "$HOME/.claude"
@@ -150,6 +158,14 @@ if [ -n "$CODER_WORKSPACE_NAME" ] && [ -d "$HOME/$CODER_WORKSPACE_NAME" ]; then
 fi
 EOF
   echo "dotfiles: auto-cd naar project directory toegevoegd aan .bashrc"
+fi
+
+# Git config: autoSetupRemote zodat git push zonder --set-upstream werkt
+if ! git config --global push.autoSetupRemote &>/dev/null; then
+  git config --global push.autoSetupRemote true
+  echo "dotfiles: git push.autoSetupRemote=true ingesteld"
+else
+  echo "dotfiles: git push.autoSetupRemote al ingesteld"
 fi
 
 # Zorg dat .bash_aliases geladen wordt vanuit .bashrc
